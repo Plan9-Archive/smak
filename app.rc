@@ -40,11 +40,11 @@ fn imgprev {
 	img_file=$werc_root^'/'^$sitedir^$img
 	if(! test -f $prev)
 		convert $img_file -resize $prev_size $prev
-	tpl_handler apps/imgs/imgprev.tpl
+	tpl_handler apps/smak/imgprev.tpl
 }
 
 fn imgindex {
-	tpl_handler apps/imgs/imgindex.tpl
+	tpl_handler apps/smak/imgindex.tpl
 }
 
 fn dirlist {

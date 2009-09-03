@@ -1,0 +1,20 @@
+SMAK is another image gallery app for werc.
+
+To enable it, add:
+
+	conf_enable_smak
+
+to _werc/config in the dir with the image gallery.
+
+It uses the ImageMagick tools. The _werc directory
+has to be writable by the web server.
+
+To configure SMAK to your taste, modifying the tpl
+files should be enough. The functions give results
+in different lines, so they can be processed with
+common filters. To add content to a directory index
+add a _werc/readme.md file.
+
+FAQ:
+- What does SMAK mean?
+  http://www.smak.be/

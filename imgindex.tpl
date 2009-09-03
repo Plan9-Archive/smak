@@ -3,5 +3,5 @@
 % dirlist
 </div>
 % thumbs 96
-% if(test -f $imgs_dir^/i.md)
-%	md_handler $imgs_dir^/i.md
+% if(test -f $imgs_dir^/_werc/readme.md)
+%	md_handler $imgs_dir^/_werc/readme.md
