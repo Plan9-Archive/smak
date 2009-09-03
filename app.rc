@@ -1,0 +1,65 @@
+fn conf_enable_smak {
+    extensions=(png jpg jpeg bmp)
+    outextension=png
+    prev_size=420x640
+    thumb_size=128x128
+
+    imgs_root=`{pwd}^'/_werc/imgs'
+    mkdir -p $imgs_root
+    mkdir -p $imgs_root^'/prevs'
+    mkdir -p $imgs_root^'/thumbs'
+    base_path=`{basename -d $conf_wd}
+
+    conf_enable_app smak
+}
+
+fn smak_init {
+    if (~ `{basename $local_path} index)
+	handler_body_main=imgindex
+    if not if (test -f $werc_root^'/'^$local_path^'.'^$extensions)
+	handler_body_main=imgprev
+    if not
+	handler_body_main=()
+}
+
+fn mkthumbs {
+	for (f in `{ls $1^/*.^$extensions}){
+		name=`{basename $f}
+		thumb=$imgs_root^'/thumbs/'^`{echo $name | sed 's|\.[^\.]+$||'}^'.'^$outextension
+		if(! test -f $thumb)
+			convert $f -resize $thumb_size $thumb
+	}
+}
+
+fn imgprev {
+	name=`{basename $req_path}
+	for (i in $req_path^'.'^$extensions)
+		if (test -f $werc_root^'/'^$sitedir^$i)
+			img=$i
+	prev=$imgs_root^'/prevs/'^$name^'.'^$outextension
+	img_file=$werc_root^'/'^$sitedir^$img
+	if(! test -f $prev)
+		convert $img_file -resize $prev_size $prev
+	tpl_handler apps/imgs/imgprev.tpl
+}
+
+fn imgindex {
+	tpl_handler apps/imgs/imgindex.tpl
+}
+
+fn dirlist {
+	if (! ~ `{basename -d $req_path} $base_path)
+		echo '<a href="'^$base_path^'">..</a>'
+	@{cd $sitedir^$base_path; ls -d */ | grep -v '^_werc$' | sed 's,.*,<a href="'^$base_path^'/&">&</a>,'}
+}
+
+fn thumbs {
+	imgs_dir=$sitedir^`{basename -d $req_path}
+	mkthumbs $imgs_dir
+	for (i in `{ls $imgs_dir^/*.^$extensions}) {
+		p = `{basename $i | sed 's|\.[^\.]*$||'}
+		s = $base_path^'/_werc/imgs/thumbs/'^$p^'.'^$outextension
+		echo '<a href="'^$p^'"><img src="'^$s^'" alt="'^$p^'" title="'^$p^'" height='^$1^'px></a>'
+	}
+}
+
