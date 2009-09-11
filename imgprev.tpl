@@ -1,4 +1,4 @@
-<h2>%($name%)</h2>
+<h2 style="text-transform:capitalize">%{echo $name | sed 's/_/ /g'%}</h2>
 <div style="float:left">
 <a href="%($img%)"><img src="%($base_path^'/_werc/imgs/prevs/'^$name^'.'^$outextension%)"></a><br>
 % identify $img_file | awk '{print $2,$5,$3,"(" $NF ")"}'
