@@ -48,12 +48,16 @@ fn imgindex {
 }
 
 fn dirlist {
-	bname=`{basename -d $req_path}
+	if (test $#* -lt 1)
+		bname=`{basename -d $req_path}
+	if not
+		bname=`{cleanname $1}
 	if (! ~ $bname $base_path){
+		@{dirlist `{basename -d $req_path}^/..}
+		echo '|'
 		echo '<a href="..">..</a>'
-		bname=$bname^/..
 	}
-	@{ cd `{echo $bname | sed 's|'^$base_path^'|'^$imgs_root^'|' | sed 's|/_werc/imgs||'}
+	@{ cd $sitedir^$bname
 	ls -d */ | grep -v '^_werc$' | sed 's,.*,<a href="'^$bname^'/&">&</a>,'}
 }
 
