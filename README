@@ -13,7 +13,7 @@ To configure SMAK to your taste, modifying the tpl
 files should be enough. The functions give results
 in different lines, so they can be processed with
 common filters. To add content to a directory index
-add a _werc/readme.md file.
+use the index.md file.
 
 FAQ:
 - What does SMAK mean?

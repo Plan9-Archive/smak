@@ -48,9 +48,13 @@ fn imgindex {
 }
 
 fn dirlist {
-	if (! ~ `{basename -d $req_path} $base_path)
-		echo '<a href="'^$base_path^'">..</a>'
-	@{cd $sitedir^$base_path; ls -d */ | grep -v '^_werc$' | sed 's,.*,<a href="'^$base_path^'/&">&</a>,'}
+	bname=`{basename -d $req_path}
+	if (! ~ $bname $base_path){
+		echo '<a href="..">..</a>'
+		bname=$bname^/..
+	}
+	@{ cd `{echo $bname | sed 's|'^$base_path^'|'^$imgs_root^'|' | sed 's|/_werc/imgs||'}
+	ls -d */ | grep -v '^_werc$' | sed 's,.*,<a href="'^$bname^'/&">&</a>,'}
 }
 
 fn thumbs {
