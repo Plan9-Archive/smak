@@ -26,7 +26,7 @@ fn mkthumbs {
 	for (f in `{ls $1^/*.^$extensions}){
 		name=`{basename $f}
 		thumb=$imgs_root^'/thumbs/'^`{echo $name | sed 's|\.[^\.]+$||'}^'.'^$outextension
-		if(! test -f $thumb)
+		if(! test $thumb -nt $img_file)
 			convert $f -resize $thumb_size $thumb
 	}
 }
@@ -38,7 +38,7 @@ fn imgprev {
 			img=$i
 	prev=$imgs_root^'/prevs/'^$name^'.'^$outextension
 	img_file=$werc_root^'/'^$sitedir^$img
-	if(! test -f $prev)
+	if(! test $prev -nt $img_file)
 		convert $img_file -resize $prev_size $prev
 	tpl_handler apps/smak/imgprev.tpl
 }
