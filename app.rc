@@ -53,9 +53,10 @@ fn dirlist {
 	if not
 		bname=`{cleanname $1}
 	if (! ~ $bname $base_path){
-		@{dirlist `{basename -d $req_path}^/..}
+		@{dirlist $bname^/..}
 		echo '|'
-		echo '<a href="..">..</a>'
+		if (~ $bname `{basename -d $req_path})
+			echo '<a href="..">..</a>'
 	}
 	@{ cd $sitedir^$bname
 	ls -d */ | grep -v '^_werc$' | sed 's,.*,<a href="'^$bname^'/&">&</a>,'}
