@@ -26,7 +26,7 @@ fn mkthumbs {
 	for (f in `{ls $1^/*.^$extensions}){
 		name=`{basename $f}
 		thumb=$imgs_root^'/thumbs/'^`{echo $name | sed 's|\.[^\.]+$||'}^'.'^$outextension
-		if(! test $thumb -nt $img_file)
+		if(! test $thumb -nt $f)
 			convert $f -resize $thumb_size $thumb
 	}
 }
