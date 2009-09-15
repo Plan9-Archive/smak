@@ -5,8 +5,8 @@ fn conf_enable_smak {
     thumb_size=128x128
 
     imagemagick_convert_cmd='convert $f -resize $size $outf'
-    p9p_convert_cmd='{png -c $f || jpg -c $f || bmp -c $f} >[2]/dev/null | resample -x $s(1) | resample -y $s(2) | topng >$outf'
-    convert_cmd=$"p9p_convert_cmd
+    p9p_convert_cmd='{png -9 $f || jpg -9 $f || bmp -9 $f} >[2]/dev/null | resample -x $s(1) | topng >$outf'
+    convert_cmd=$p9p_convert_cmd
 
     imgs_root=`{pwd}^'/_werc/imgs'
     mkdir -p $imgs_root
