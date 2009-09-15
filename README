@@ -6,8 +6,13 @@ To enable it, add:
 
 to _werc/config in the dir with the image gallery.
 
-It uses the ImageMagick tools. The _werc directory
-has to be writable by the web server.
+It uses the p9p tools to convert the images (bmp,
+jpg and png to read input files; resample and topng
+to transform and write them). If the value of the
+convert_cmd is set to $imagemagick_convert_cmd in
+the config file, the ImageMagick tools will be used
+instead. The _werc directory has to be writable by
+the web server.
 
 To configure SMAK to your taste, modifying the tpl
 files should be enough. The functions give results
