@@ -1,7 +1,10 @@
 <h2 style="text-transform:capitalize">%{echo $name | sed 's/_/ /g'%}</h2>
 <div style="float:left">
 <a href="%($img%)"><img src="%($base_path^'/_werc/imgs/prevs/'^$name^'.'^$outextension%)"></a><br>
-% identify $img_file | awk '{print $2,$5,$3,"(" $NF ")"}'
+%if(~ $convert_cmd $imagemagick_convert_cmd)
+%	identify $f | awk '{print $2,$5,$3,"(" $NF ")"}'
+%if not
+%	ls -s $f | awk '{print($1 "Kb",$2)}'
 </div>
 <div style="float:right;width:40%;text-align:left">
 <strong>%{echo $req_path | sed 's|^/||;s|[^/]*$||'%}</strong>

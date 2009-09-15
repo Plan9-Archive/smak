@@ -4,6 +4,10 @@ fn conf_enable_smak {
     prev_size=420x640
     thumb_size=128x128
 
+    imagemagick_convert_cmd='convert $f -resize $size $outf'
+    p9p_convert_cmd='{png -c $f || jpg -c $f || bmp -c $f} >[2]/dev/null | resample -x $s(1) | resample -y $s(2) | topng >$outf'
+    convert_cmd=$"p9p_convert_cmd
+
     imgs_root=`{pwd}^'/_werc/imgs'
     mkdir -p $imgs_root
     mkdir -p $imgs_root^'/prevs'
@@ -23,11 +27,14 @@ fn smak_init {
 }
 
 fn mkthumbs {
+	ifs='x' {s=`{echo -n $thumb_size}}
+	size=$thumb_size
 	for (f in `{ls $1^/*.^$extensions}){
 		name=`{basename $f}
-		thumb=$imgs_root^'/thumbs/'^`{echo $name | sed 's|\.[^\.]+$||'}^'.'^$outextension
-		if(! test $thumb -nt $f)
-			convert $f -resize $thumb_size $thumb
+		outf=$imgs_root^'/thumbs/'^`{echo $name | sed 's|\.[^\.]+$||'}^'.'^$outextension
+		if(! test $outf -nt $f)
+			eval $convert_cmd
+		
 	}
 }
 
@@ -36,10 +43,12 @@ fn imgprev {
 	for (i in $req_path^'.'^$extensions)
 		if (test -f $werc_root^'/'^$sitedir^$i)
 			img=$i
-	prev=$imgs_root^'/prevs/'^$name^'.'^$outextension
-	img_file=$werc_root^'/'^$sitedir^$img
-	if(! test $prev -nt $img_file)
-		convert $img_file -resize $prev_size $prev
+	f=$werc_root^'/'^$sitedir^$img
+	ifs='x' {s=`{echo -n $prev_size}}
+	size=$prev_size
+	outf=$imgs_root^'/prevs/'^$name^'.'^$outextension
+	if(! test $outf -nt $f)
+		eval $convert_cmd
 	tpl_handler apps/smak/imgprev.tpl
 }
 
