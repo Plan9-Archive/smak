@@ -11,8 +11,15 @@ jpg and png to read input files; resample and topng
 to transform and write them). If the value of the
 convert_cmd is set to $imagemagick_convert_cmd in
 the config file, the ImageMagick tools will be used
-instead. The _werc directory has to be writable by
-the web server.
+instead. Alternatively, you can define convert_cmd
+as a custom command, where:
+   - $f = original file
+   - $outf = output file
+   - $size = size in the form WIDTHxHEIGHT
+   - $s(1) = width and $s(2) = height
+
+The _werc directory has to be writable by the
+web server.
 
 To configure SMAK to your taste, modifying the tpl
 files should be enough. The functions give results
