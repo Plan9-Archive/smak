@@ -6,6 +6,15 @@ To enable it, add:
 
 to _werc/config in the dir with the image gallery.
 
+After enabling the app, some variables can be
+configured:
+
+   - extensions=(png jpg jpeg bmp)
+   - outextension=png
+   - prev_size=420x640
+   - thumb_size=128x128
+   - convert_cmd=$p9p_convert_cmd
+
 It uses the p9p tools to convert the images (bmp,
 jpg and png to read input files; resample and topng
 to transform and write them). If the value of the
@@ -13,6 +22,7 @@ convert_cmd is set to $imagemagick_convert_cmd in
 the config file, the ImageMagick tools will be used
 instead. Alternatively, you can define convert_cmd
 as a custom command, where:
+
    - $f = original file
    - $outf = output file
    - $size = size in the form WIDTHxHEIGHT
