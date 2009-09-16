@@ -4,7 +4,7 @@
 %if(~ $convert_cmd $imagemagick_convert_cmd)
 %	identify $f | awk '{print $2,$5,$3,"(" $NF ")"}'
 %if not
-%	ls -s $f | awk '{gsub("^.*/","",$2);print($2, "(" $1 "Kb)")}'
+%	ls -sp $f | awk '{print($2, "(" $1 "Kb)")}'
 </div>
 <div style="float:right;width:40%;text-align:left">
 <strong>%{echo $req_path | sed 's|^/||;s|[^/]*$||'%}</strong>
