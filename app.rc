@@ -80,3 +80,20 @@ fn thumbs {
 	}
 }
 
+fn prevnext {
+	bname=`{basename -d $req_path}
+	ls -p $sitedir^$bname^/*.^$extensions | awk '
+	   /^'^$1^'/{
+	      sub("\.[^\.]*$", "", p);
+	      t = (p == "") ? ".." : "prev"
+	      print "<a href=\"'^$bname^'/" p "\">" t "</a>";
+	      print "/";
+	      getline;
+	      sub("\.[^\.]*$", "");
+	      t = ($0 == "") ? ".." : "next"
+	      print "<a href=\"'^$bname^'/" $0 "\">" t "</a>";
+	      exit;
+	   }
+	   {p = $0;}'
+}
+
