@@ -34,7 +34,6 @@ fn mkthumbs {
 		outf=$imgs_root^'/thumbs/'^`{echo $name | sed 's|\.[^\.]+$||'}^'.'^$outextension
 		if(! test $outf -nt $f)
 			eval $convert_cmd
-		
 	}
 }
 
