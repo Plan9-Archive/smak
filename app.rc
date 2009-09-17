@@ -85,13 +85,15 @@ fn prevnext {
 	ls -p $sitedir^$bname^/*.^$extensions | awk '
 	   /^'^$1^'/{
 	      sub("\.[^\.]*$", "", p);
-	      t = (p == "") ? ".." : "prev"
-	      print "<a href=\"'^$bname^'/" p "\">" t "</a>";
-	      print "/";
+	      t = (p == "") ? "'^$5^'" : "'^$2^'"
+	      tt = (p == "") ? "all" : "prev"
+	      print "<a title=\"" tt "\" href=\"'^$bname^'/" p "\">" t "</a>";
+	      print "'^$3^'";
 	      getline;
 	      sub("\.[^\.]*$", "");
-	      t = ($0 == "") ? ".." : "next"
-	      print "<a href=\"'^$bname^'/" $0 "\">" t "</a>";
+	      t = ($0 == "") ? "'^$5^'" : "'^$4^'"
+	      tt = ($0 == "") ? "all" : "next"
+	      print "<a title=\"" tt "\" href=\"'^$bname^'/" $0 "\">" t "</a>";
 	      exit;
 	   }
 	   {p = $0;}'

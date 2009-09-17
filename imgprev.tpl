@@ -1,8 +1,8 @@
 <div style="float:left">
-<h2 style="text-transform:capitalize">%{echo $name | sed 's/_/ /g'%}</h2>
-<div style="text-align:right">
-% prevnext $name
-</div>
+<h2 style="text-transform:capitalize">%{echo $name | sed 's/_/ /g'%}
+<div style="display:inline;float:right">
+% prevnext $name '&larr;' '' '&rarr;' '::'
+</div></h2>
 <a href="%($img%)"><img src="%($base_path^'/_werc/imgs/prevs/'^$name^'.'^$outextension%)"></a><br>
 %if(~ $convert_cmd $imagemagick_convert_cmd)
 %	identify $f | awk '{print $2,$5,$3,"(" $NF ")"}'
