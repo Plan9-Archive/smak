@@ -20,8 +20,6 @@ fn smak_init {
         | sed -e 's!.*/([^/]+)\.[^\.]+$!\1!' \
         | sort -n | uniq} # -un did not work, don't ask me why
 
-    smak_prev_list=$smak_base_uri$"smak_dir/$"smak_img_list
-
     if(! ~ $"smak_file '' && test -f $smak_file)
         handler_body_main=(tpl_handler apps/smak/preview.tpl)
     if not if(! test -f $werc_root/$local_path && test -d $smak_root/$"smak_dir)
@@ -71,15 +69,16 @@ fn smak_thumbnails {
 }
 
 fn smak_navigation {
+   smak_prev_list=$smak_base_uri$"smak_dir/$smak_img_list
    p=''
    for(i in $smak_prev_list){
-        if(~ $req_path $p)
-                echo '<a href="'$i'">&rarr;</a>'
         if(~ $req_path $i){
-            if(! ~ $p '')
+            if(! ~ $"p '')
                 echo '<a href="'$p'">&larr;</a>'
             echo '<a href=".">::</a>'
         }
+        if(~ $req_path $"p)
+                echo '<a href="'$i'">&rarr;</a>'
         p=$i
     }
 }
