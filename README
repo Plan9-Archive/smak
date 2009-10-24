@@ -10,33 +10,19 @@ After enabling the app, some variables can be
 configured:
 
    - extensions=(png jpg jpeg bmp)
-   - outextension=png
-   - prev_size=420x640
-   - thumb_size=128x128
-   - convert_cmd=$p9p_convert_cmd
+   - prev_width=420
+   - thumb_height=96
 
 It uses the p9p tools to convert the images (bmp,
 jpg and png to read input files; resample and topng
-to transform and write them). If the value of the
-convert_cmd is set to $imagemagick_convert_cmd in
-the config file, the ImageMagick tools will be used
-instead. Alternatively, you can define convert_cmd
-as a custom command, where:
-
-   - $f = original file
-   - $outf = output file
-   - $size = size in the form WIDTHxHEIGHT
-   - $s(1) = width and $s(2) = height
+to transform and write them).
 
 The _werc directory has to be writable by the
 web server.
 
 To configure SMAK to your taste, modifying the tpl
-files should be enough. The functions give results
-in different lines, so they can be processed with
-common filters. To add content to a directory index
-use the index.md file.
+files should be enough.
 
 FAQ:
-- What does SMAK mean?
+- What is the meaning of SMAK?
   http://www.smak.be/

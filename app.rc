@@ -1,101 +1,85 @@
 fn conf_enable_smak {
     extensions=(png jpg jpeg bmp)
-    outextension=png
-    prev_size=420x640
-    thumb_size=128x128
+    prev_width=420
+    thumb_height=96
 
-    imagemagick_convert_cmd='convert $f -resize $size $outf'
-    p9p_convert_cmd='{png -t9 $f || jpg -t9 $f || bmp -t9 $f} >[2]/dev/null | resample -x $s(1) | topng >$outf'
-    convert_cmd=$p9p_convert_cmd
-
-    imgs_root=`{pwd}^'/_werc/imgs'
-    mkdir -p $imgs_root
-    mkdir -p $imgs_root^'/prevs'
-    mkdir -p $imgs_root^'/thumbs'
-    base_path=`{basename -d $conf_wd}
+    smak_base_uri=$conf_wd
+    smak_root=`{pwd}
 
     conf_enable_app smak
 }
 
 fn smak_init {
-    if (~ `{basename $local_path} index)
-	handler_body_main=imgindex
-    if not if (test -f $werc_root^'/'^$local_path^'.'^$extensions)
-	handler_body_main=imgprev
-    if not
-	handler_body_main=()
+    p=`{echo $req_path | sed 's!^'^$smak_base_uri^'!!'}
+    smak_dir=`{basename -d $"p}
+    smak_img=`{basename $"p}
+    smak_file=`{ls $smak_root/$"smak_dir/$"smak_img^.$extensions | sed 1q}
+    smak_title=`{echo $"smak_img | sed 's/_/ /'}
+
+    smak_img_list=`{ls $smak_root/$"smak_dir/*.$extensions \
+        | sed -e 's!.*/([^/]+)\.[^\.]+$!\1!' \
+        | sort -n | uniq} # -un did not work, don't ask me why
+
+    smak_prev_list=$smak_base_uri$"smak_dir/$"smak_img_list
+
+    if(! ~ $"smak_file '' && test -f $smak_file)
+        handler_body_main=(tpl_handler apps/smak/preview.tpl)
+    if not if(! test -f $werc_root/$local_path && test -d $smak_root/$"smak_dir)
+        handler_body_main=(tpl_handler apps/smak/thumbnails.tpl)
 }
 
-fn mkthumbs {
-	ifs='x' {s=`{echo -n $thumb_size}}
-	size=$thumb_size
-	for (f in `{ls $1^/*.^$extensions}){
-		name=`{basename $f}
-		outf=$imgs_root^'/thumbs/'^`{echo $name | sed 's|\.[^\.]+$||'}^'.'^$outextension
-		if(! test $outf -nt $f)
-			eval $convert_cmd
-	}
+fn smak_resize {
+    {png -t9 $3 || jpg -t9 $3 || bmp -t9 $3} \
+        | resample $1 $2 | topng > $4
 }
 
-fn imgprev {
-	name=`{basename $req_path}
-	for (i in $req_path^'.'^$extensions)
-		if (test -f $werc_root^'/'^$sitedir^$i)
-			img=$i
-	f=$werc_root^'/'^$sitedir^$img
-	ifs='x' {s=`{echo -n $prev_size}}
-	size=$prev_size
-	outf=$imgs_root^'/prevs/'^$name^'.'^$outextension
-	if(! test $outf -nt $f)
-		eval $convert_cmd
-	tpl_handler apps/smak/imgprev.tpl
+fn smak_preview {
+    smak_original=`{basename $smak_file}
+    smak_prev_path=_werc/smak/prev/
+    smak_prev_dir=$smak_root/$smak_prev_path^$"smak_dir
+    smak_prev_file=$smak_prev_dir/$"smak_img.png
+    smak_prev_img=$smak_base_uri^$smak_prev_path^$"smak_dir/$"smak_img.png
+
+    mkdir -p $smak_prev_dir
+    if(! test $smak_prev_file -nt $smak_file)
+        smak_resize -x $prev_width $smak_file $smak_prev_file
+
+    echo -n '<a href="'$smak_original'">'
+    echo -n '<img alt="'$"smak_title'" title="'$"smak_title'" '
+    echo 'width='$prev_width'px src="'$smak_prev_img'"></a>'
 }
 
-fn imgindex {
-	tpl_handler apps/smak/imgindex.tpl
+fn smak_thumbnails {
+    smak_thumb_path=_werc/smak/thumb/
+    smak_thumb_dir=$smak_root/$smak_thumb_path^$"smak_dir
+
+    mkdir -p $smak_thumb_dir
+    for(i in $smak_img_list){
+        smak_thumb_original=`{ls $smak_root/$"smak_dir/$i^.$extensions | sed 1q}
+        smak_thumb_file=$smak_thumb_dir/$i.png
+        smak_thumb_img=$smak_base_uri^$smak_thumb_path^$"smak_dir/$i.png
+        smak_thumb_link=$smak_base_uri^$"smak_dir/$i
+        smak_thumb_title=`{echo $i | sed 's/_/ /'}
+
+        if(! test $smak_thumb_file -nt $smak_thumb_original)
+            smak_resize -y $thumb_height $smak_thumb_original $smak_thumb_file
+
+        echo -n '<a href="'$smak_thumb_link'">'
+        echo -n '<img alt="'$"smak_thumb_title'" title="'$"smak_thumb_title'" '
+        echo 'height='$1'px src="'$smak_thumb_img'"></a>'
+    }
 }
 
-fn dirlist {
-	if (test $#* -lt 1)
-		bname=`{basename -d $req_path}
-	if not
-		bname=`{cleanname $1}
-	if (! ~ $bname $base_path){
-		@{dirlist $bname^/..}
-		echo '|'
-		if (~ $bname `{basename -d $req_path})
-			echo '<a href="..">..</a>'
-	}
-	@{ cd $sitedir^$bname
-	ls -d */ | grep -v '^_werc$' | sed 's,.*,<a href="'^$bname^'/&">&</a>,'}
+fn smak_navigation {
+   p=''
+   for(i in $smak_prev_list){
+        if(~ $req_path $p)
+                echo '<a href="'$i'">&rarr;</a>'
+        if(~ $req_path $i){
+            if(! ~ $p '')
+                echo '<a href="'$p'">&larr;</a>'
+            echo '<a href=".">::</a>'
+        }
+        p=$i
+    }
 }
-
-fn thumbs {
-	imgs_dir=$sitedir^`{basename -d $req_path}
-	mkthumbs $imgs_dir
-	for (i in `{ls $imgs_dir^/*.^$extensions}) {
-		p = `{basename $i | sed 's|\.[^\.]*$||'}
-		s = $base_path^'/_werc/imgs/thumbs/'^$p^'.'^$outextension
-		echo '<a href="'^$p^'"><img src="'^$s^'" alt="'^$p^'" title="'^$p^'" height='^$1^'px></a>'
-	}
-}
-
-fn prevnext {
-	bname=`{basename -d $req_path}
-	ls -p $sitedir^$bname^/*.^$extensions | awk '
-	   /^'^$1^'/{
-	      sub("\.[^\.]*$", "", p);
-	      t = (p == "") ? "'^$5^'" : "'^$2^'"
-	      tt = (p == "") ? "all" : "prev"
-	      print "<a title=\"" tt "\" href=\"'^$bname^'/" p "\">" t "</a>";
-	      print "'^$3^'";
-	      getline;
-	      sub("\.[^\.]*$", "");
-	      t = ($0 == "") ? "'^$5^'" : "'^$4^'"
-	      tt = ($0 == "") ? "all" : "next"
-	      print "<a title=\"" tt "\" href=\"'^$bname^'/" $0 "\">" t "</a>";
-	      exit;
-	   }
-	   {p = $0;}'
-}
-
