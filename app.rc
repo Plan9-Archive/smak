@@ -1,6 +1,6 @@
 fn conf_enable_smak {
     if (~ $smak_extensions '')
-        smak_extensions=(png jpg jpeg bmp)
+        smak_extensions=(png jpg jpeg bmp gif)
     if (~ $smak_prev_width '')
         smak_prev_width=420
     if (~ $smak_thumb_size '')
@@ -30,7 +30,7 @@ fn smak_init {
 }
 
 fn smak_resize {
-    {png -t9 $3 || jpg -t9 $3 || bmp -t9 $3} \
+    {png -t9 $3 || jpg -t9 $3 || bmp -t9 $3 || gif -t9 $3} \
         | resample $1 $2 | topng > $4
 }
 
@@ -42,10 +42,10 @@ fn smak_preview {
     if(! test $f -nt $smak_file)
         smak_resize -x $smak_prev_width $smak_file $f
 
-    echo -n '<a href="'`{basename $smak_file}'">'
-    echo -n '<img alt="'$"smak_title'" title="'$"smak_title'" '
-    echo -n 'src="'$smak_base_uri^$p^$"smak_dir/$"smak_img'.png" '
-    echo 'width='$smak_prev_width'px></a>'
+    echo '<a href="'`{basename $smak_file}'">' \
+        '<img alt="'$"smak_title'" title="'$"smak_title'" ' \
+        'src="'$smak_base_uri^$p^$"smak_dir/$"smak_img'.png" ' \
+        'width='$smak_prev_width'px></a>'
 }
 
 fn smak_thumbnails {
@@ -61,10 +61,10 @@ fn smak_thumbnails {
         if(! test $f -nt $o)
             smak_resize -y $smak_thumb_height $o $f
 
-        echo -n '<a href="'$smak_base_uri^$"smak_dir/$i'">'
-        echo -n '<img alt="'$"t'" title="'$"t'" '
-        echo -n 'src="'$smak_base_uri^$p^$"smak_dir/$i'.png" '
-        echo 'height='$1'px></a>'
+        echo '<a href="'$smak_base_uri^$"smak_dir/$i'">' \
+            '<img alt="'$"t'" title="'$"t'" ' \
+            'src="'$smak_base_uri^$p^$"smak_dir/$i'.png" ' \
+            'height='$1'px></a>'
     }
 }
 
