@@ -15,3 +15,4 @@
 % smak_thumbnails 72
 </div>
 <div style="clear:both"></div>
+% smak_preload $smak_next

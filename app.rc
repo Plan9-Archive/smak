@@ -71,19 +71,30 @@ fn smak_thumbnails {
     }
 }
 
+fn smak_preload {
+    t=_werc/smak/prev/$"smak_dir/^`{basename $1}^.png
+    f=$smak_root/$t
+    o=`{ls $smak_root/$"smak_dir/^`{basename $1}^.$smak_extensions \
+        >[2]/dev/null | sed 1q}
+    mkdir -p `{basename -d $f}
+    if(! test $f -nt $o)
+        smak_resize -x $smak_prev_width $o $f
+    echo '<img style="display:none;" src="'$smak_base_uri^$t'">'
+}
+
 fn smak_navigation {
    b=$smak_base_uri^_werc/smak/prev/$"smak_dir/
    p=''
    for(i in $smak_base_uri$"smak_dir/$smak_dir_list){
         if(~ $req_path $i){
             if(! ~ $"p '')
-                    echo '<img style="display:none;" src="'$b^`{basename $p}^.png'">' \
-                        '<a href="'$p'" title="prev">&larr;</a>'
+                echo '<a href="'$p'" title="prev">&larr;</a>'
             echo '<a href="." title="up">::</a>'
         }
-        if(~ $req_path $"p)
-                echo '<img style="display:none;" src='$b^`{basename $i}^'.png">' \
-                    '<a href="'$i'" title="next">&rarr;</a>'
+        if(~ $req_path $"p){
+            smak_next=$i
+            echo '<a href="'$i'" title="next">&rarr;</a>'
+        }
         p=$i
     }
 }
