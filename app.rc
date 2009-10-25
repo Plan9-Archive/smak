@@ -23,10 +23,11 @@ fn smak_init {
         | sed -e 's!.*/([^/]+)\.[^\.]+$!\1!' \
         | sort -n | uniq} # -un did not work, don't ask me why
 
-    if(! ~ $"smak_file '' && test -f $smak_file)
+    if(test -f $smak_file)
         handler_body_main=(tpl_handler apps/smak/preview.tpl)
-    if not if(! test -f $smak_root/$"smak_dir^/index.^(md htm html tpl) && \
-        ! test -f $werc_root/$local_path && test -d $smak_root/$"smak_dir)
+    if not if(~ $"smak_img '' && test -d $smak_root/$"smak_dir \
+        && ! test -f $smak_root/$"smak_dir^/index.^(md htm html tpl) \
+        && ! test -f $werc_root/$local_path)
         handler_body_main=(tpl_handler apps/smak/thumbnails.tpl)
 }
 
