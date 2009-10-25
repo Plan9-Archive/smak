@@ -6,7 +6,7 @@
 </div></h2>
 % smak_preview
 <br>
-% ls -sp $smak_file | awk '{print("<a href=\"'^`{basename $smak_prev_file}^'\">" $2 "</a>", "(" $1 "Kb)")}'
+% ls -sp $smak_file | awk '{print("<a href=\"'^`{basename $smak_file}^'\">" $2 "</a>", "(" $1 "Kb)")}'
 </div>
 
 <div style="float:right;width:40%;text-align:left">
