@@ -1,4 +1,5 @@
 SMAK is another image gallery app for werc.
+(by JGL.yiyus 2009)
 
 To enable it, add:
 
@@ -6,22 +7,20 @@ To enable it, add:
 
 to _werc/config in the dir with the image gallery.
 
-After enabling the app, some variables can be
-configured:
+To configure SMAK to your taste, set this variables:
 
-   - extensions=(png jpg jpeg bmp)
-   - prev_width=420
-   - thumb_height=96
+   - smak_extensions=(png jpg jpeg bmp gif)
+   - smak_prev_width=420
+   - smak_thumb_height=96
+
+for further customizations, modify the tpl files.
 
 It uses the p9p tools to convert the images (bmp,
-jpg and png to read input files; resample and topng
-to transform and write them).
+jpg, png and gif to read input files; resample and
+topng to transform and write them).
 
 The _werc directory has to be writable by the
 web server.
-
-To configure SMAK to your taste, modifying the tpl
-files should be enough.
 
 FAQ:
 - What is the meaning of SMAK?
