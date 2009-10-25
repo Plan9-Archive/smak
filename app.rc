@@ -73,12 +73,14 @@ fn smak_thumbnails {
 
 fn smak_preload {
     t=_werc/smak/prev/$"smak_dir/^`{basename $1}^.png
-    f=$smak_root/$t
     o=`{ls $smak_root/$"smak_dir/^`{basename $1}^.$smak_extensions \
         >[2]/dev/null | sed 1q}
+    f=$smak_root/$t
+
     mkdir -p `{basename -d $f}
     if(! test $f -nt $o)
         smak_resize -x $smak_prev_width $o $f
+
     echo '<img style="display:none;" src="'$smak_base_uri^$t'">'
 }
 

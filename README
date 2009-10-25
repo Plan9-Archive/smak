@@ -1,6 +1,13 @@
 SMAK is another image gallery app for werc.
 (by JGL.yiyus 2009)
 
+It displays thumbnails of the image files in the
+directory if no index file is found, and shows
+previews of the images in synthetic urls of the
+form img/ for the file img.jpg. The preview
+preloads the next image, so it can be stored
+on the client cache.
+
 To enable it, add:
 
 	conf_enable_smak
