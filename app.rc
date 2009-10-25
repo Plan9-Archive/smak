@@ -14,7 +14,7 @@ fn smak_init {
     smak_dir=`{basename -d $"p}
     smak_img=`{basename $"p}
     smak_file=`{ls $smak_root/$"smak_dir/$"smak_img^.$extensions | sed 1q}
-    smak_title=`{echo $"smak_img | sed 's/_/ /'}
+    smak_title=`{echo $"smak_img | sed 's/_/ /g'}
 
     smak_img_list=`{ls $smak_root/$"smak_dir/*.$extensions \
         | sed -e 's!.*/([^/]+)\.[^\.]+$!\1!' \
@@ -32,19 +32,17 @@ fn smak_resize {
 }
 
 fn smak_preview {
-    smak_original=`{basename $smak_file}
     smak_prev_path=_werc/smak/prev/
-    smak_prev_dir=$smak_root/$smak_prev_path^$"smak_dir
-    smak_prev_file=$smak_prev_dir/$"smak_img.png
-    smak_prev_img=$smak_base_uri^$smak_prev_path^$"smak_dir/$"smak_img.png
+    smak_prev_file=$smak_root/$smak_prev_path^$"smak_dir/$"smak_img.png
 
-    mkdir -p $smak_prev_dir
+    mkdir -p `{basename -d $smak_prev_file}
     if(! test $smak_prev_file -nt $smak_file)
         smak_resize -x $prev_width $smak_file $smak_prev_file
 
-    echo -n '<a href="'$smak_original'">'
-    echo -n '<img alt="'$"smak_title'" title="'$"smak_title'" '
-    echo 'width='$prev_width'px src="'$smak_prev_img'"></a>'
+    echo -n '<a href="'`{basename $smak_file}'">'
+    echo -n '<img alt="'$"smak_title'" title="'$"smak_title'" width='$prev_width'px '
+    echo -n 'src="'$smak_base_uri^$smak_prev_path^$"smak_dir/$"smak_img'.png">'
+    echo '</a>'
 }
 
 fn smak_thumbnails {
@@ -57,7 +55,7 @@ fn smak_thumbnails {
         smak_thumb_file=$smak_thumb_dir/$i.png
         smak_thumb_img=$smak_base_uri^$smak_thumb_path^$"smak_dir/$i.png
         smak_thumb_link=$smak_base_uri^$"smak_dir/$i
-        smak_thumb_title=`{echo $i | sed 's/_/ /'}
+        smak_thumb_title=`{echo $i | sed 's/_/ /g'}
 
         if(! test $smak_thumb_file -nt $smak_thumb_original)
             smak_resize -y $thumb_height $smak_thumb_original $smak_thumb_file
@@ -74,11 +72,11 @@ fn smak_navigation {
    for(i in $smak_prev_list){
         if(~ $req_path $i){
             if(! ~ $"p '')
-                echo '<a href="'$p'">&larr;</a>'
-            echo '<a href=".">::</a>'
+                echo '<a href="'$p'" title="prev">&larr;</a>'
+            echo '<a href="." title="up">::</a>'
         }
         if(~ $req_path $"p)
-                echo '<a href="'$i'">&rarr;</a>'
+                echo '<a href="'$i'" title="next">&rarr;</a>'
         p=$i
     }
 }
