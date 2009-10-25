@@ -16,11 +16,10 @@ fn smak_init {
     p=`{echo $req_path | sed 's!^'^$smak_base_uri^'!!'}
     smak_dir=`{basename -d $"p | sed 's!^\.$!!'}
     smak_img=`{basename $"p}
-    smak_file=`{ls $smak_root/$"smak_dir/$"smak_img^.$smak_extensions | sed 1q}
-    smak_title=`{echo $"smak_img | sed 's/_/ /g'}
-
+    smak_file=`{ls $smak_root/$"smak_dir/$"smak_img^.$smak_extensions \
+        >[2]/dev/null | sed 1q}
     smak_dir_list=`{ls $smak_root/$"smak_dir/*.$smak_extensions \
-        | sed -e 's!.*/([^/]+)\.[^\.]+$!\1!' \
+        >[2]/dev/null | sed -e 's!.*/([^/]+)\.[^\.]+$!\1!' \
         | sort -n | uniq} # -un did not work, don't ask me why
 
     if(test -f $smak_file)
@@ -39,13 +38,14 @@ fn smak_resize {
 fn smak_preview {
     p=_werc/smak/prev/
     f=$smak_root/$p^$"smak_dir/$"smak_img.png
+    t=`{echo $"smak_img | sed 's/_/ /g'}
 
     mkdir -p `{basename -d $f}
     if(! test $f -nt $smak_file)
         smak_resize -x $smak_prev_width $smak_file $f
 
     echo '<a href="'`{basename $smak_file}'">' \
-        '<img alt="'$"smak_title'" title="'$"smak_title'" ' \
+        '<img alt="'$"t'" title="'$"t'" ' \
         'src="'$smak_base_uri^$p^$"smak_dir/$"smak_img'.png" ' \
         'width='$smak_prev_width'px></a>'
 }
@@ -57,7 +57,8 @@ fn smak_thumbnails {
     mkdir -p $d
     for(i in $smak_dir_list){
         f=$d/$i.png
-        o=`{ls $smak_root/$"smak_dir/$i^.$smak_extensions | sed 1q}
+        o=`{ls $smak_root/$"smak_dir/$i^.$smak_extensions \
+            >[2]/dev/null | sed 1q}
         t=`{echo $i | sed 's/_/ /g'}
 
         if(! test $f -nt $o)

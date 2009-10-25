@@ -1,6 +1,6 @@
 <div style="float:left">
 <h2 style="text-transform:capitalize">
-% echo $smak_title
+% echo $"smak_img | sed 's/_/ /g'
 <div style="display:inline;float:right">
 % smak_navigation
 </div></h2>
