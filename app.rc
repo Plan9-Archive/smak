@@ -51,18 +51,17 @@ fn smak_thumbnails {
 
     mkdir -p $smak_thumb_dir
     for(i in $smak_img_list){
-        smak_thumb_original=`{ls $smak_root/$"smak_dir/$i^.$extensions | sed 1q}
-        smak_thumb_file=$smak_thumb_dir/$i.png
-        smak_thumb_img=$smak_base_uri^$smak_thumb_path^$"smak_dir/$i.png
-        smak_thumb_link=$smak_base_uri^$"smak_dir/$i
+        smak_thumb=$smak_thumb_dir/$i.png
+        smak_thumb_file=`{ls $smak_root/$"smak_dir/$i^.$extensions | sed 1q}
         smak_thumb_title=`{echo $i | sed 's/_/ /g'}
 
-        if(! test $smak_thumb_file -nt $smak_thumb_original)
-            smak_resize -y $thumb_height $smak_thumb_original $smak_thumb_file
+        if(! test $smak_thumb -nt $smak_thumb_file)
+            smak_resize -y $thumb_height $smak_thumb_file $smak_thumb
 
-        echo -n '<a href="'$smak_thumb_link'">'
+        echo -n '<a href="'$smak_base_uri^$"smak_dir/$i">'
         echo -n '<img alt="'$"smak_thumb_title'" title="'$"smak_thumb_title'" '
-        echo 'height='$1'px src="'$smak_thumb_img'"></a>'
+        echo -n 'src="'$smak_base_uri^$smak_thumb_path^$"smak_dir/$i'.png" '
+        echo 'height='$1'px></a>'
     }
 }
 
