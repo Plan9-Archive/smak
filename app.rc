@@ -72,15 +72,18 @@ fn smak_thumbnails {
 }
 
 fn smak_navigation {
+   b=$smak_base_uri^_werc/smak/prev/$"smak_dir/
    p=''
    for(i in $smak_base_uri$"smak_dir/$smak_dir_list){
         if(~ $req_path $i){
             if(! ~ $"p '')
-                echo '<a href="'$p'" title="prev">&larr;</a>'
+                    echo '<img style="display:none;" src="'$b^`{basename $p}^.png'">' \
+                        '<a href="'$p'" title="prev">&larr;</a>'
             echo '<a href="." title="up">::</a>'
         }
         if(~ $req_path $"p)
-                echo '<a href="'$i'" title="next">&rarr;</a>'
+                echo '<img style="display:none;" src='$b^`{basename $i}^'.png">' \
+                    '<a href="'$i'" title="next">&rarr;</a>'
         p=$i
     }
 }
