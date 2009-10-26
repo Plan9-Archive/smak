@@ -21,7 +21,7 @@ fn smak_init {
     smak_dir_list=`{ls $smak_root/$"smak_dir/*.$smak_extensions \
         >[2]/dev/null | sed -e 's!.*/([^/]+)\.[^\.]+$!\1!' \
         | sort -n | uniq} # -un did not work, don't ask me why
-    smak_comment=`{basename -d $smak_file}^/_^$smak_img^.md
+    smak_comment=`{basename -d $"smak_file}^/_^$"smak_img^.md
 
     extraHeaders=($extraHeaders '<style>' `{cat \
         apps/smak/style.css} '</style>')
