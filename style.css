@@ -1,6 +1,10 @@
 #smak-prev {
   float: left;
 }
+#smak-nav {
+  display:inline;
+  float:right;
+}
 #smak-thumb {
   float:right;
   width:40%;

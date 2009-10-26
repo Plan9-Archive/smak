@@ -1,7 +1,7 @@
 <div id="smak-prev">
 <h2 style="text-transform:capitalize">
 % echo $"smak_img | sed 's/_/ /g'
-<div style="display:inline;float:right">
+<div id="smak-nav">
 % smak_navigation
 </div></h2>
 % smak_preview
