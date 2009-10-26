@@ -1,4 +1,4 @@
-<div style="float:left">
+<div id="smak-prev">
 <h2 style="text-transform:capitalize">
 % echo $"smak_img | sed 's/_/ /g'
 <div style="display:inline;float:right">
@@ -9,7 +9,7 @@
 % ls -sp $smak_file | awk '{print("<a href=\"'^`{basename $smak_file}^'\">" $2 "</a>", "(" $1 "Kb)")}'
 </div>
 
-<div style="float:right;width:40%;text-align:left">
+<div id="smak-thumb">
 <strong>%($smak_dir%)</strong>
 <hr>
 % smak_thumbnails 72

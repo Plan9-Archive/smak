@@ -1,0 +1,12 @@
+#smak-prev {
+  float: left;
+}
+#smak-thumb {
+  float:right;
+  width:40%;
+  text-align:left
+}
+#smak-thumb img.thisPage {
+  height: 69px;
+  border: solid 2px red;
+}

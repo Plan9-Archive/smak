@@ -22,6 +22,9 @@ fn smak_init {
         >[2]/dev/null | sed -e 's!.*/([^/]+)\.[^\.]+$!\1!' \
         | sort -n | uniq} # -un did not work, don't ask me why
 
+    extraHeaders=($extraHeaders '<style>' `{cat \
+        apps/smak/style.css} '</style>')
+
     if(test -f $smak_file)
         handler_body_main=(tpl_handler apps/smak/preview.tpl)
     if not if(~ $"smak_img '' && test -d $smak_root/$"smak_dir \
@@ -60,12 +63,15 @@ fn smak_thumbnails {
         o=`{ls $smak_root/$"smak_dir/$i^.$smak_extensions \
             >[2]/dev/null | sed 1q}
         t=`{echo $i | sed 's/_/ /g'}
+        s=''
+        if(~ $o $smak_file)
+            s='class="thisPage" '
 
         if(! test $f -nt $o)
             smak_resize -y $smak_thumb_height $o $f
 
         echo '<a href="'$smak_base_uri^$"smak_dir/$i'">' \
-            '<img alt="'$"t'" title="'$"t'" ' \
+            '<img alt="'$"t'" title="'$"t'" '$s \
             'src="'$smak_base_uri^$p^$"smak_dir/$i'.png" ' \
             'height='$1'px></a>'
     }
