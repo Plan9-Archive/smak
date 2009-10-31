@@ -43,7 +43,7 @@ fn smak_init {
 
 fn smak_resize {
     {png -t9 $3 || jpg -t9 $3 || bmp -t9 $3 || gif -t9 $3} \
-        | resample $1 $2 | topng > $4
+        >[2]/dev/null | resample $1 $2 | topng > $4
 }
 
 fn smak_preview {
