@@ -29,7 +29,7 @@ fn smak_init {
     pt=$smak_root/_werc/smak/preview.tpl
     if(! test -f $pt)
         pt=apps/smak/preview.tpl
-    tt=$smak_root/_werc/smak/preview.tpl
+    tt=$smak_root/_werc/smak/thumbnails.tpl
     if(! test -f $tt)
         tt=apps/smak/thumbnails.tpl
 
