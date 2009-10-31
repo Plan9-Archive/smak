@@ -18,7 +18,9 @@
 <div id="smak-thumb">
 <strong>%($smak_dir%)</strong>
 <hr>
+<p>
 % smak_thumbnails 72
+</p>
 </div>
 
 <div style="clear:both"></div>
