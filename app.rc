@@ -26,10 +26,10 @@ fn smak_init {
     extraHeaders=($extraHeaders '<style>' `{cat \
         apps/smak/style.css} '</style>')
 
-    pt=$smak_root/preview.tpl
+    pt=$smak_root/_werc/smak/preview.tpl
     if(! test -f $pt)
         pt=apps/smak/preview.tpl
-    tt=$smak_root/preview.tpl
+    tt=$smak_root/_werc/smak/preview.tpl
     if(! test -f $tt)
         tt=apps/smak/thumbnails.tpl
 
