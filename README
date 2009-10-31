@@ -8,7 +8,7 @@ form path/img for the file path/img.jpg. The
 preview preloads the next image, so it can be
 stored on the client cache.
 
-To enable it, add:
+To enable SMAK, add:
 
 	conf_enable_smak
 
@@ -18,20 +18,25 @@ Comments can be added to the preview image with
 markdown syntax through the file path/_img.md for
 the file path/img.jpg.
 
-To configure SMAK to your taste, set this variables:
+To configure SMAK to your taste, set these variables:
 
    - smak_extensions=(png jpg jpeg bmp gif)
    - smak_prev_width=420
    - smak_thumb_height=96
 
 for further customizations, modify the tpl files.
+You can copy the files preview.tpl and/or
+thumbnails.tpl to _werc/smak/, so you don't have
+to overwrite the originals. Different templates
+can be used for different galleries.
 
-It uses the p9p tools to convert the images (bmp,
+SMAK uses the p9p tools to convert the images: bmp,
 jpg, png and gif to read input files; resample and
-topng to transform and write them).
+topng to transform and write them.
 
 The _werc directory has to be writable by the
-web server.
+web server. Thumbnails and preview png files will
+be stored in _werc/smak/thumb and _werc/smak/prev.
 
 FAQ:
 - What is the meaning of SMAK?

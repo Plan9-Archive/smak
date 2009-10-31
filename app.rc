@@ -26,12 +26,19 @@ fn smak_init {
     extraHeaders=($extraHeaders '<style>' `{cat \
         apps/smak/style.css} '</style>')
 
+    pt=$smak_root/preview.tpl
+    if(! test -f $pt)
+        pt=apps/smak/preview.tpl
+    tt=$smak_root/preview.tpl
+    if(! test -f $tt)
+        tt=apps/smak/thumbnails.tpl
+
     if(test -f $smak_file)
-        handler_body_main=(tpl_handler apps/smak/preview.tpl)
+        handler_body_main=(tpl_handler $pt)
     if not if(~ $"smak_img '' && test -d $smak_root/$"smak_dir \
         && ! test -f $smak_root/$"smak_dir^/index.^(md htm html tpl) \
         && ! test -f $werc_root/$local_path)
-        handler_body_main=(tpl_handler apps/smak/thumbnails.tpl)
+        handler_body_main=(tpl_handler $tt)
 }
 
 fn smak_resize {
