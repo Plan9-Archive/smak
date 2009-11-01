@@ -38,7 +38,7 @@ fn smak_template {
     if(test -f $smak_root/_werc/smak/$1.tpl)
         echo -n $smak_root/_werc/smak/$1.tpl
     if not
-        echo -n apps/smak/$1.tpl
+        get_lib_file smak/$1.tpl apps/smak/$1.tpl
 }
 
 fn smak_resize {

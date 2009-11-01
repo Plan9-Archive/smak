@@ -24,11 +24,10 @@ To configure SMAK to your taste, set these variables:
    - smak_prev_width=420
    - smak_thumb_height=96
 
-for further customizations, modify the tpl files.
-You can copy the files preview.tpl and/or
-thumbnails.tpl to _werc/smak/, so you don't have
-to overwrite the originals. Different templates
-can be used for different galleries.
+For further customizations, use the tpl files. You
+can copy the files preview.tpl and/or thumbnails.tpl
+to _werc/smak/ for a given gallery, or use lib files
+per site or directory in _werc/lib/smak/.
 
 SMAK uses the p9p tools to convert the images: bmp,
 jpg, png and gif to read input files; resample and
@@ -37,6 +36,8 @@ topng to transform and write them.
 The _werc directory has to be writable by the
 web server. Thumbnails and preview png files will
 be stored in _werc/smak/thumb and _werc/smak/prev.
+Be sure that your web server is serving the static
+files or images won't be correctly cached by the client.
 
 FAQ:
 - What is the meaning of SMAK?
