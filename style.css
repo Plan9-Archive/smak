@@ -1,6 +1,9 @@
 #smak-prev {
   float: left;
 }
+#smak-prev h2 {
+  text-transform: capitalize;
+}
 #smak-nav {
   display:inline;
   float:right;

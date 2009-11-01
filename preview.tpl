@@ -1,9 +1,10 @@
 <div id="smak-prev">
-<h2 style="text-transform:capitalize">
+<h2>
 % echo $"smak_img | sed 's/_/ /g'
 <div id="smak-nav">
 % smak_navigation
-</div></h2>
+</div>
+</h2>
 % smak_preview
 <br>
 % ls -sp $smak_file | awk '{print("<a href=\"'^`{basename $smak_file}^'\">" $2 "</a>", "(" $1 "Kb)")}'
@@ -13,7 +14,6 @@
 </div>
 % }
 </div>
-
 
 <div id="smak-thumb">
 <strong>%($smak_dir%)</strong>
